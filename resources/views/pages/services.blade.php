@@ -7,7 +7,7 @@
         <title>{{config('app.name', 'laravelProject')}}</title>
     </head>
     <body>
-        <h1> About </h1>
+        <h1> Services </h1>
         <p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo inventore quos debitis deleniti minus voluptate aperiam nihil, unde iusto quis aliquam illum eos natus doloribus id odio esse asperiores quaerat! </p>
     </body>
 </html>

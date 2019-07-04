@@ -67,3 +67,15 @@
         Route::get('/hello', function () {
             return view('pages.about');             //pages içerisindeki about çağırılır, pages/about olarak da kullanılaiblir.
         });
+    
+    . Direk olarak view'ı return etmek yerine bir controller oluştururuz,
+        - php artisan make:controller PagesController
+        - bu komut çalıştırıldığında app/Http/Contollers içerisinde dosya oluşturulmaktadır.
+        - Burada uzantılara göer geri döndürülecek sayfaları ayarlayacağız ve bu fonksiyon aracılığıyla viewları döndüreceğiz.
+            . Bu dosya içerisindeki fonksiyonları dosyadan kontrol edip açıklamalarına bakabilirsin.
+            . Home page oluşturulur.
+        - Her bir sayfa oluşturulduğunda PagesController içerisine eklenmeli. About, Index, Gallery etc.
+        - PagesController içerisinde eklenen her bir page için doğru yönlenebilmesi için ise routes/web.php güncellenmeli.
+
+- .env
+    . Buradan app ismini değiştiriyoruz ve index içerisindeki işlerimize devam ediyoruz.
