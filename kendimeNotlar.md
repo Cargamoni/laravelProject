@@ -79,3 +79,15 @@
 
 - .env
     . Buradan app ismini değiştiriyoruz ve index içerisindeki işlerimize devam ediyoruz.
+
+[Part3]
+
+- Sürekli tekrar eden HTML bölümlerinden kaçınmak için burada layout dizini oluşturulacaktır.
+    . resources/pages/layout
+        Burada app.blade.php oluşturularak tekrarlayan HTML bölümünü buraya ekliyoruz.
+    - app.blade.php içerisinde layout oluşturularak, sabit html bölümünün içerisine dinamik değişken bir içerik eklenmesi bu şekilde mümkün olabilmektedir.
+
+- PagesController içerisinde tanımladığımız fonksiyonlardan sayfalara veri veya parametre göndermek için, PagesController.php içerisine bakın. Her iki yöntemde gösterilmektedir.
+
+- Assets kullanımına laravel izin vermektedir., laravel içerisinde gömülü olarak gelen bootstrap kullanılabilir.
+
