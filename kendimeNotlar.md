@@ -42,3 +42,28 @@
     . database.php içerisinden veri tabanı bağlantısının bilgileri girilmektedir.
 
 [Part2]
+
+- routes/
+    . web.php içerisinde / dizindeyken hnagi modülün return edileceği belirlenir. 
+    . view('welcome') fonksyionu view'lar içerisinde adı welcome olanı return eder ve ana sayfa yüklenir.
+    . return edilen fonksyion yerine başka bir view yüklenebilir.
+    . Aşağıdaki kod bloğunda görüldüğü gibi url içerisinde /hello size sadece HelloWorld yazısını geri döndürür.
+        Route::get('/hello', function () {
+            return 'HelloWorld';
+        });
+    . Route::post, Route::delete... gibi metodlar da kullanılaiblir.
+    . Dinamik bir şekilde sayfa getirilecekse 
+        Route::get('/users/{id}', function($id) {      //Önemli olan kısım  $ işaretinin yeri.
+            return 'Bu istenilen id '.$id;
+        });
+        Route::get('/users/{id}/{name}', function($id,$name) {      //Önemli olan kısım  $ işaretinin yeri.
+            return 'Bu istenilen id '.$id.' '.$name;
+        });
+
+- resources/views
+    . pages adlı bir klasör oluşturup içerisine sayfalarımızı olutşturalım.
+    . about.blade.php içerisine gösterilmesi istenilen bilgileri yazıp route içerisine ekleyelim
+    . pages dizini içerisinde tanımlanan about.blade.php dosyası, routes içerisinden yeni bir fonksiyon yazılarak şu şekilde çağırılabilir,
+        Route::get('/hello', function () {
+            return view('pages.about');             //pages içerisindeki about çağırılır, pages/about olarak da kullanılaiblir.
+        });

@@ -14,3 +14,19 @@
 Route::get('/', function () {
     return view('welcome');
 });
+
+// Route::get('/hello', function () {
+//     return 'HelloWorld';
+// });
+
+Route::get('/about', function() {
+    return view('pages.about');
+});
+
+Route::get('/users/{id}', function($id) {
+    return 'Bu istenilen id '.$id;
+});
+
+Route::get('/users/{id}/{name}', function($id,$name) {
+    return 'Bu istenilen id '.$id.' adı '.$name;
+});
