@@ -115,5 +115,46 @@
 
 [Part4]
 
+- Burada veritabanına giriş yapıyoruz. PhpmyAdmin'e giriş yapalım
+    . phpmyadmin üzerinden giriş yaptığımızda laravelProject adında bir veritabanı oluşturduk. Şimdilik oluşturduktan sonra yeni bir controller olutşurmak için php artisan'a başvuruyoruz.
+        . `php artisan make:controller PostsController`
+        Blog postlarını oluşturmayı sağlaycak.
+        . `php artisan make:model Post -m`
+        Bu sefer artisan ile beraber model oluşturulmaktadır. -m parametresi ile beraber veritabanı tablosu /database/migrations içerisine eklenmektedir.
+
+        Bu iki komutu uyguladıktan sonra /app içerisinde User.php gibi bir model oluşturulmaktadır. Yeni oluşturduğumuz modelin adı Post. Bu modeli kontrol etmek için de PostsController oluşturuldu.
+
+        /database/migrations içerisinde artisan aracılığı ile oluşturulan *_create_posts_table.php içerisine baktığımız zaman, up ve down fonksiyonlarını görmekteyiz, run db dediğimiz zaman 
+            Schema::create('posts', function (Blueprint $table) {   //post tablosu oluşturuyor
+            $table->bigIncrements('id');                            //primarykey oluşturacak 
+            $table->timestamps();                });                //tabloya oluşturulma ve güncelleme zamanı eklenecek.
+
+            Eğer bir sütun eklemek istiyorsak dosya içerisindeki yorum satılarını okuyun.
+        
+        . Laravel oluştururken kolaylık olması açısından Users tablosunu ve user.php modelini eklemektedir.
+
+    . Migration'ı başlatmadan önce .env içerisindeki veritabanı bilgilerini güncellememiz gerekmektedir.
+        . env içerisine girdiğimizde
+            DB_DATABASE=laravelProject (Database'i hangi isimle oluşturduysanız o isim)
+            DB_USERNAME=cargamoni
+            DB_PASSWORD=123456
+            yukarıdaki bilgiler sizinkilerle uygun olması gerekmektedir, yoksa bağlantı yapamazsınız. Dilerseniz phpmyadmin üzerinden kendinize bir kullanıcı oluşturabilirsiniz, dilerseniz de root kullanıcını kullanarak bağlantı yapabilirsiniz.
+        
+        . env içerisindeki bilgiler tamamlandıktan sonra migrate işlemine hazırız demektir.
+            . `php artisan make` Bu komut koşulduğunda, php tüm /database/migrations altındaki tabloları veritabanına ekleyecektir.
+
+        NOT: Bu noktada eski versiyonlarda bir hata oluşabiliyormuş, bende olmadı ancak olursa diye aşağıdaki şekilde /app/Providers/AppServiceProvider.php dosyasını düzenleyin
+            use Illuminate\Support\Facades\Schema;  //Class üzerinde kütüphaneyi ekleyin
+
+            boot fonksiyonu içerisine ise
+            Schema::defaultStringLength(191); //Satırını ekleyin.
+
+            Bu kısım bende yorum satırı içerisinde olacak bilginize.
+    
+    . Migration' yapıldıktan sonra phpmyadmin içerisinden tabloların eklendiğini görüyoruz.
+
+
+
+
         
 
