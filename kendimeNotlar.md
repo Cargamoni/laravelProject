@@ -114,6 +114,8 @@
     . Aynı zamanda index.blade.php içerisine jumbotron eklendi
 
 [Part4]
+- Artisan bir Laravel ile birlikte gelen bir CLI (Command Line Interface)'dir. Php uygulamalarını kolay bir şekilde uyarlamanızı, projenizi yönetmenizi sağlar. Aşağıdaki adresten detaylarını öğrenebiliriz.
+    https://laravel.com/docs/5.8/artisan
 
 - Burada veritabanına giriş yapıyoruz. PhpmyAdmin'e giriş yapalım
     . phpmyadmin üzerinden giriş yaptığımızda laravelProject adında bir veritabanı oluşturduk. Şimdilik oluşturduktan sonra yeni bir controller olutşurmak için php artisan'a başvuruyoruz.
@@ -152,6 +154,65 @@
             Bu kısım bende yorum satırı içerisinde olacak bilginize.
     
     . Migration' yapıldıktan sonra phpmyadmin içerisinden tabloların eklendiğini görüyoruz.
+
+- Tablolara verileri eklemek için artisan'ın tinker uygulamasına başvuracağız.
+    . `php artisan tinker`
+        Tinker, controller sınıfı yerine işlemleri test edebileceğimiz bir komut yardımı sağlıyor. Debug işleminde kodları kaydetmeden çalıştırabilmemizi sağlıyor. Aşağıdaki örnekte olduğu gibi veritabanında kayıtlı olan post sayısını, veritabanına post eklememizi sağlamaktadır. Laravel için kuvvetli bir REPL (Read–eval–print loop) çözümü diyebiliriz.
+
+        Aşağıdaki komutlar tinker içerisinde işlem yaparken kullanılmaktadır.
+    
+    . `App\Post::count()`
+        Tabloda kayıtlı olan satır sayısını döndürmektedir.
+    
+    . `$post = new App\Post();`
+        PHP bir nesne yönelimli programlama dilidir. Bu sayede siz bir nesne için RAM üzerinde bir alan ayırıp bununla işlemler yapabilirsiniz ve her `new` önderleyici komutu sayesindede bu işlem farklı bir RAM bölümüne yazılarak işlenir.
+
+        Bu komuttan sonra $post değişkeni içerisinde tablonun tüm elemanları bulunmaktadır. 
+
+    . `$post->title='İlk Post';`
+    . `$post->body='Buda gövdek kısmı';`
+    . `$post->save();`
+        Tablodaki title ve body kısımları değerleri eklendi. save fonksiyonu ile de bu bilgiler veri tabanına eklenmektedir. Fonksyionun geri döndürdüğü true/false değerine göre işlemin başarılı olup olmadığı belirtilir. Bu durumda oluşturulma ve değiştirilme tarihiyle beraber id de veritabanına eklenir.
+    
+- Index, Create, Store, Edit, Update, Show, Destroy. Tüm bu işlemler PostsController üzerinden gerçekleştirilmesi gerekmektedir. Bütün hepsi bir postun indexini, oluşturulmasını, saklanmasını, düzenlenmesini, güncellenmesini, gösterilmesini ve silinmesini sağlayacaktır. Daha öncesinde oluşutrduğumuz PostsController dosyasını hatırlıyorsunuzdur. Yukarıda her yazdığımız işlem için bir yönlendirme yani route oluşturmamız gerekmekte. Şudanda aktif olan route'ları görmek için `php artisan route:list` komutundan yardım alabiliriz. Bana şu anda aşağıdaki gibi bir sonuç vermekte. 
+
++--------+----------+----------+------+-----------------------------------------------+--------------+
+| Domain | Method   | URI      | Name | Action                                        | Middleware   |
++--------+----------+----------+------+-----------------------------------------------+--------------+
+|        | GET|HEAD | /        |      | App\Http\Controllers\PagesController@index    | web          |
+|        | GET|HEAD | about    |      | App\Http\Controllers\PagesController@about    | web          |
+|        | GET|HEAD | api/user |      | Closure                                       | api,auth:api |
+|        | GET|HEAD | services |      | App\Http\Controllers\PagesController@services | web          |
++--------+----------+----------+------+-----------------------------------------------+--------------+
+
+- Her bir işlem için yeni bir route oluşturmamız gerekmekte. Bunun için PostsController.php dosyamızı siliyoruz. Bunu yapmamızın sebebi yukarıda yazdığımız tüm fonksiyonlar bizim resource'larımız yani kaynaklarımız diyebiliriz. Bu kaynak fonksiyonlarını Artisan bizim için oluşturabilmektedir.
+    `php artisan make:controller PostsController --resource`
+    Komutu çalıştırdıktan sonra yeni PostsController dosyasının içerisinde fonskiyonlarımızın oluştuğunu görüyoruz ve bu her fonksiyon için ayrı bir route'a ihtiyacımız olacaktır.
+
+- /routes/web.php içerisine girdiğimizde,
+    Elimizdeki tüm route'ları görebiliriz, `Route::resource('posts','PostsController');` satırını eklediğimizde otomatik olarak tüm route'lar elenmektedir.
+
+    `php artisan:route:list`
++--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
+| Domain | Method    | URI               | Name          | Action                                        | Middleware   |
++--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
+|        | GET|HEAD  | /                 |               | App\Http\Controllers\PagesController@index    | web          |
+|        | GET|HEAD  | about             |               | App\Http\Controllers\PagesController@about    | web          |
+|        | GET|HEAD  | api/user          |               | Closure                                       | api,auth:api |
+|        | GET|HEAD  | posts             | posts.index   | App\Http\Controllers\PostsController@index    | web          |
+|        | POST      | posts             | posts.store   | App\Http\Controllers\PostsController@store    | web          |
+|        | GET|HEAD  | posts/create      | posts.create  | App\Http\Controllers\PostsController@create   | web          |
+|        | GET|HEAD  | posts/{post}      | posts.show    | App\Http\Controllers\PostsController@show     | web          |
+|        | PUT|PATCH | posts/{post}      | posts.update  | App\Http\Controllers\PostsController@update   | web          |
+|        | DELETE    | posts/{post}      | posts.destroy | App\Http\Controllers\PostsController@destroy  | web          |
+|        | GET|HEAD  | posts/{post}/edit | posts.edit    | App\Http\Controllers\PostsController@edit     | web          |
+|        | GET|HEAD  | services          |               | App\Http\Controllers\PagesController@services | web          |
++--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
+
+- Görüldüğü gibi bir tüm route'lar eklenmiştir. Bir sonraki bölümde bu postlarla iligili işlemleri yapacağız.
+
+[Part5]
+
 
 
 

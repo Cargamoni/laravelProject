@@ -39,5 +39,5 @@ Route::get('/about', 'PagesController@about');
 
 Route::get('/services', 'PagesController@services');
 
-
+Route::resource('posts', 'PostsController');        //Kontrol içerisinde oluşturulan her bir fonksiyon için yönlendirme oluşturur.
 
