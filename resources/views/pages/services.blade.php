@@ -8,12 +8,10 @@
     <h1>{{$title}}</h1>
 
     @if(count($services) > 0)
-    <ul>
+    <ul class="list-group">
         @foreach($services as $service)
-            <li>{{$service}}</li>
+            <li class="list-group-item">{{$service}}</li>
         @endforeach
     </ul>
     @endif
-
-    <p> Lorem ipsum dolor, sit amet consectetur adipisicing elit. Explicabo inventore quos debitis deleniti minus voluptate aperiam nihil, unde iusto quis aliquam illum eos natus doloribus id odio esse asperiores quaerat! </p>
 @endsection

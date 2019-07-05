@@ -11,7 +11,11 @@
         <title>{{config('app.name', 'laravelProject')}}</title>
     </head>
     <body>
-        <!-- Bu bölüme pages içerisindeki content bölümü yani içerik gelecektir. Bu sayede tüm pages içerisindeki tekrarlayan kısımları atabiliriz. -->
-        @yield('content')
+        {{-- Navbar buraya include ediliyor. --}}
+        @include('inc.navbar')
+        <div class="container">
+            <!-- Bu bölüme pages içerisindeki content bölümü yani içerik gelecektir. Bu sayede tüm pages içerisindeki tekrarlayan kısımları atabiliriz. -->
+            @yield('content')
+        </div>
     </body>
 </html>

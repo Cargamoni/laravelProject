@@ -90,4 +90,30 @@
 - PagesController içerisinde tanımladığımız fonksiyonlardan sayfalara veri veya parametre göndermek için, PagesController.php içerisine bakın. Her iki yöntemde gösterilmektedir.
 
 - Assets kullanımına laravel izin vermektedir., laravel içerisinde gömülü olarak gelen bootstrap kullanılabilir.
+- Laravel içerisinde CSS framework olarak SASS kullanmaktadır. /resources/sass içerisinde görülebilir. SASS ile asıl CSS dosyası değiştirilebilir, eklemeler yapılabilir. Proje içerisine çağırmak için is asset('css/app.css') fonksyionu kullanılmaktadır. /public/css/app.css içerisinde yer almaktadır.
+- Ana dizin içerisinde package.json içerisine baktığımız zaman bootstrap içerisinde olduğunu görebiliyoruz, aynı zamanda vue.js ve sass'ın kullanabilmesi için sass frameworkü de beraberinde gelmektedir. Bu sayede assets olarak eklenebilir. Bunun yapılabilmesi için proje içerisinde npm yüklemek gerekiyor (sanırım). Npm yüklendikten sonra proje içerisinde npm install komutunu girdikten sonra package.json içerisindeki gerekli olan nodeları npm projeniz içerisine aktarmaktadır.
+- Tüm node'lar eklendiğinde proje dizininiz içerisine node_modules eklenmektedir.
+- Arayüzde bir değişiklik yapmak istediğimiz zaman bunu, public içerisindeki css üzerinden değil yukaruda da belirttiğimiz sass içerisinden yapmak gerekmektedir. Yaptığınız değişikliklerin uygulanabilmesi, yani bir nevi derlenebilmesi için `npm run dev` komutunu çalıştırmamız gerekmektedir. NPM tüm dosyaları tarayarak değişiklikleri işler ve bir nevi derleyerek değişiklikleri çalıştırılabilir ve gösterilebilir hale getirir (yanlış anladıysam lütfen düzeltin).
+    . /resources/sass/_variables.scss
+        $body-bg: #f8fafc; //değiştirilip `npm run dev` komutunu koşalım
+- Sürekli olarak her seferinde aynı komutu koşmak de her değişiklik yaptığımızda bunu görmek için uğraşmak yerine `npm run watch` kullanulabilir. Sürekli olarak değişiklikleri izleyerek uygulanabilir olan değişiklikleri görülebilir hale getirlir.
+- Eğer kendi yaptığınız bir css dosyasını eklemek için yine /resources/sass içerisinde _cssDosyasi.scss oluşturulabilir. Örnek olarak _custom.scss oluşturalım.
+    . /resources/sass/_custom.scss
+        Bu eklendikten sonra app.scss içerisine import etmemiz gerekmektedir. Bu sayede değişiklikler uygulanabilsin.
+
+- Bu bölümde aslında bir Navigation Bar yapmak için neleri değiştirip düzenlememiz gerekiyor ona bir bakalım.
+    . app.blade.php
+        Container Div
+    . services.blade.php
+        ul class="list-group"
+        li class="list-group-item"
+    . NavBar include edileceği için yani her sayfada çağırılacağı için views içerisine bir dizin oluşturalım. navbar.blade.php oluşturulduğunda her çağırıldığına aslında sayfa içerisine Navigation Bar eklenmektedir. Eklemek için ise app.blade.php içerisine gidip
+        . @include('inc.navbar'); yazmak yeterli oluyor.
+    . Bootstrap sitesinden navbarı çekip ekledik. Bu sayede navbar layout içerisinde include edilerek tüm sayfalarda gösterilebiliyor.
+    . Değişiklikleri izlemek için app.blade.php içerisine bakabilirsiniz.
+    . Aynı zamanda index.blade.php içerisine jumbotron eklendi
+
+[Part4]
+
+        
 
