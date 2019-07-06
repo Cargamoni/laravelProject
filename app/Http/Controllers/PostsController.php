@@ -48,7 +48,15 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //Validate ile gelen request'deki verilerin yeterliliği kontrol edilmektedir.
+        //Boş gönderildiyse veriler eklenmeyecektir.
+        
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        return 123;
     }
 
     /**

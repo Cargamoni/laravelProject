@@ -236,6 +236,43 @@
 
 [Part6]
 
+- Bu bölümde post ekleme işlemi yapıyoruz, /resources/views/posts/create.blade.php dosyasını oluşturup index.blade.php içerisinde ne varsa kopyalayıp yapıştırıyoruz, değişiklikleri onun içerisinden takip edebilirsiniz.
+
+- Bu bölümde bir post oluşturma sayfası oluşturacağız. Bunun için laravelcollective.com internet sitesi daha fazla destek vermiyor ancak github üzerinden yardımlar mevcut. Ben yine yaptığım her adımı neden olduğu ile beraber yardımcı olmaya çalışacağım. Dökümantasyon aşağıda mevcut ekstra olarak incelemek isteyenler için.
+    . https://github.com/LaravelCollective/docs/blob/5.6/html.md
+
+
+    - Yükleme aşamasında öncelikle composer aracılığıyla laravelcollective eklentisini ekleyeceğiz. Ekleyeceğimiz bu araç bize formları daha kolay bir şekilde oluşturmamızı. Form-Groupları daha iyi bir şekilde kullanabilmemizi sağlayan bir araçtır.
+
+    . `composer require "laravelcollective/html":"^5.4.0"`
+        
+    - Composer ile beraver laravelcollective indiriyoruz. Daha sonra bu aracı projemizde kullanabilmek için gerekli provider ve alias ları ekliyoruz. /config/app.php içerisinde providers bölümüne,
+          'providers' => [
+                // ...
+                Collective\Html\HtmlServiceProvider::class,
+                // ...
+            ],
+
+    - Son olarak da yine /config/app.php içerisindeki aliases bölümüne,
+            'aliases' => [
+                // ...
+                'Form' => Collective\Html\FormFacade::class,
+                'Html' => Collective\Html\HtmlFacade::class,
+                // ...
+            ],
+        eklemeleri yapıyoruz.
+
+- Bu eklemeleri yaptıktan sonra /resources/views/posts/crate.blade.php içerisine kurulumunu yaptığımız aracı ekleyelim.
+
+        . Formun örneği aşağıdaki gibidir, gerekli açıklamayı dosya içerisinden görebilirsiniz.
+                {{ Form::open(['url' => 'foo/bar']) }}
+                    //
+                {{ Form::close() }}
+
+- GNU/Linux işletim sistemlerinde /bootstrap/cache yazılabilir olmalı diye bir hata aldım, others kullanıcılarına yazma yetkisini vermek durumunda kaldım.
+
+DK 11:50
+    
 
 
 

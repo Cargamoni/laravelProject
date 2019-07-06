@@ -16,6 +16,8 @@
         @include('inc.navbar')
 
         <div class="container">
+            @include('inc.messages')
+
             <!-- Bu bölüme pages içerisindeki content bölümü yani içerik gelecektir. Bu sayede tüm pages içerisindeki tekrarlayan kısımları atabiliriz. -->
             @yield('content')
         </div>
