@@ -209,9 +209,32 @@
 |        | GET|HEAD  | services          |               | App\Http\Controllers\PagesController@services | web          |
 +--------+-----------+-------------------+---------------+-----------------------------------------------+--------------+
 
-- Görüldüğü gibi bir tüm route'lar eklenmiştir. Bir sonraki bölümde bu postlarla iligili işlemleri yapacağız.
+- Yukarıda yazdığımız komut bize bir harita çıkarmaktadır, fonksiyonların bzi nereye götüreceğini, nasıl gideceğini hazırlar. Görüldüğü gibi bir tüm route'lar eklenmiştir. Bir sonraki bölümde bu postlarla iligili işlemleri yapacağız.
 
 [Part5]
+- /app/Post.php içerisinde pek fazla birşey yapmamıza gerek yok zaten, Model classını miras aldığı için aslında pek çok şeye buradan erişebiliyoruz. `Post::All();` ile Post içerisindeki herşeyi çekebiliyoruz. Yapabileceğimiz şeyler arasnda, eğer değiştirmek isterseniz tablo ismini değiştirebilirsiniz, id alınabilir veya özelleştirilebilir.
+
+- Eğer projede laravelProject.dev/posts* içerisine girdiğiniz zaman PostsController içerisindeki Index fonksiyonuna gitmektedir. Karşımıza bir ekran gelmemesinin sebebi aslında bu.
+    * Eğer hosts dosyasını düzenlediyseniz bu şekilde karşınıza gelir tarayıcınızdan, düzenlemediyseniz benim gibi aynı anda localhost/laravelProject/public/posts içerisinde görebilirsiniz.
+
+- PostsController içerisindeki Index fonksiyonundan bize posts.index view'ını döndürmesini isteyelim. Tabi bunun için Views içerisinde bir index.blade.php oluşturmamız gerekiyor. Elim değmişken dizin de oluşutrayım.
+
+- Burada değinilmesi gereken bir konu mevcut, Elequent ORM. Elequent ORM dediğimiz yapı aslında veritabanı ile daha kolay bir şekilde çalışmamızı sağlayan, kolay bir şekilde verilerimizi yönetmemize yardımcı olan bir ActiveRecord uygulamasıdır. Peki ActiveRecord dediğimiz olay ne ? ActiveRecord aslında veri tabanı uygulamalarıyla ilgilenenlerin de bildiği DML ve DDL sorgularını kolaylıkla, fonksiyonlar aracılığı ile göndermemizi sağlayan, bir yönden de hayatımızı kolaylaştıran bir araç diyebiliriz. Basitçe bir örnek verecek olursak basit elimizde adı Product olan bir tablomuz olsun;
+
+    . $urun = New Product;
+    . $urun -> name = "Monitör";
+    . $urun -> save();
+
+    Yukarıda gördüğünüz örnek aslında `insert into Product(name) values('Monitör')` SQL Query'sinden başka birşey değildir. 
+
+- Kısa bir bilgilendirmeden sonra PostsController içerisinden verilerimizi çekmeye ve göstermeye başlayalım.
+    . views/posts içerisinde oluşturduğumuz index ve show içerisinde aslında sayfalara nasıl verileri gönderdiğimizi gösterdiğim için pek bir açıklama yazmadım. Ancak neyin nasıl olduğunu yine açıkça gözükmektedir.
+
+    . PostsController içerisinde Elequent ile ilgili birkaç tane daha örnek bulabilirsiniz.
+    . Aynı zamanda /resources/views/posts/index.blade.php içerisinden gerekli yorum satırlarını okuyabilirsiniz.
+    . /resources/views/posts/show.blade.php içerisinden gerekli yorum satırlarını okuyaiblirsiniz.
+
+[Part6]
 
 
 
