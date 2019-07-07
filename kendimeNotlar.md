@@ -325,6 +325,18 @@
 
 - Yukarıdaki `php artisan route:list` çıktısından bir bölüm. Sadece bunları almamın sebebi Form'larda verilerin transfer etme metodları üzerine birkaç cümle kuracak olmam. Düzenleme yani update bölümünde Laravel'in PUT veya Patch, silmek yani destroy işlemi için ise DELETE metodlarını desteklediğini yukarıda da görebiliyoruz. Dolayısıyla resources/views/posts/show.blade.php ve resources/views/posts/edit.blade.php dosyaları içerisinde gördüğünüz hidden şeklinde belirtlimiş metodlar mevcut. Bunlar POST şeklinde pass edilen yani gönderilen verilerin görünürde POST ancak gizli olarak PUT veya PATCH, DELETE metodları kullanılarak gönderilmesini sağlamaktadır (Yanlış anladıysam, bir hatam varsa lütfen düzeltin).
 
+[Part8]
+
+- Evet böyle bir uygulama için kaçınılmaz olan durum şudur. Kimlik doğrulama sistemi ve oturum açma. Bu bölümde buna değineceğiz. Değinmemize bile gerek kalmayacak bir kolaylık sağlıyor Laravel bize. Halihazırda dosyaların içerisine baktığınız zaman,
+    app/User.php
+    app/Providers/AuthServiceProvider.php
+    app/Http/Controllers/Auth/ForgotPasswordController.php
+    app/Http/Controllers/Auth/LoginController.php
+    app/Http/Controllers/Auth/RegisterController.php
+    app/Http/Controllers/Auth/ResetPasswordController.php
+    app/Http/Controllers/Auth/VerificationController.php
+    şeklinde bir sürü kimilk doğrulama ve yönetimiyle ilgili dosyalraın olduğunu grebiliriz.
+
     
 
 
