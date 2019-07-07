@@ -6,7 +6,13 @@
     
     <h1>{{$post->title}}</h1>
     <div class="card card-body">
-            <p>{{$post->body}}</p>
+            {{-- <p>{{$post->body}}</p> --}}
+
+            {{-- CK-Editör eklendikten sonra HTML taglarını okuyabilmesi içingösterim şeklini aşağıdaki gibi değiştiriyoruz. --}}
+            <div>
+                {!!$post->body!!}
+            </div>
+            <hr>
             <small>Oluşturulma tarihi : {{$post->created_at}}</small>
     </div>
     <a href="/laravelProject/public/posts" class="btn btn-md btn-primary mt-1">Geri Dön</a>

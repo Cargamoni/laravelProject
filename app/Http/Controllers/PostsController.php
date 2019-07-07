@@ -49,14 +49,30 @@ class PostsController extends Controller
     public function store(Request $request)
     {
         //Validate ile gelen request'deki verilerin yeterliliği kontrol edilmektedir.
-        //Boş gönderildiyse veriler eklenmeyecektir.
+        //Boş gönderildiyse veriler eklenmeyecektir. Post metodu ile beraber gönderilen
+        //veriler title name option'ına ait olan başlık bölümünün gerekli olduğunu ve
+        //boş bıraklıamayacağını ifade eder. Aynı zamanda body name option'ına ait olan
+        //gövde bölümü de boş bırakılamayacaktır.
         
         $this->validate($request, [
             'title' => 'required',
             'body' => 'required'
         ]);
 
-        return 123;
+
+
+        // Yeni bir post oluşturmak için artisan tinkerda yaptığımızın aynısını burada
+        //yapıyoruz. Tinker'da yaptığımız şey postu App\Post(); şeklinde çağırırken burada
+        //Dosyanın başında use ile beraber çağırdığımız için sadece new Post şeklinde
+        //yazmamız yetiyor.
+
+        $post = new Post;
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->save();
+        
+        //İşlem tamamlandıktan sonra postların olduğu sayfaya redirect edilmekteyiz.
+        return redirect('/posts')->with('success','Post Oluşturuldu');
     }
 
     /**

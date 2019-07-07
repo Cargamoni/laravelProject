@@ -32,7 +32,13 @@
             <li class="nav-item">
                     <a class="nav-link" href="/laravelProject/public/posts">Posts</a>
             </li>
+        </ul>
 
+        {{-- Bu link sağ tarafta dursun. --}}
+        <ul class="nav navbar-nav navbar-right">
+                <li class="nav-item">
+                        <a class="nav-link" href="/laravelProject/public/posts/create">Post Oluşturun</a>
+                </li>
         </ul>
     </div>
 </nav>

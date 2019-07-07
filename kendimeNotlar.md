@@ -1,5 +1,7 @@
 # Uygulamalar
 
+* NOT: Bu dökümanı indiip, bir editör aracılığı ile bakarsanız daha rahat okuyabilirsiniz.
+
 [Part1]
 - public dizini frontend bölümü
     . /opt/lampp/etc/extra/httpd-vhosts.conf içerisine alttaki satırlar ekleniyor.
@@ -271,7 +273,54 @@
 
 - GNU/Linux işletim sistemlerinde /bootstrap/cache yazılabilir olmalı diye bir hata aldım, others kullanıcılarına yazma yetkisini vermek durumunda kaldım.
 
-DK 11:50
+- Session dediğimiz yapı, bir kullanıcı veya yöneticinin sistem üzerinde bilgilerinin belli bir süre veya sürekli olarak tutulmasını sağlayan, bu bilgileri aktif olduğu dönem boyunca sistemin erişebilmesini sağlayan, aynı zamanda bu bilgileri yeri geldiği zaman kullanıcı ve sisteme söyleyebilen bir oturum nesnesidir. /resources/views/inc içerisinde oluşturduğumuz messages.blade.php içerisinde tanımı geçtiği için açıklamak, kafada soru işaret bulunuyorsa gidermek için yardımcı olur.
+
+- resources/views/layouts/app.blade.php bildiğiniz gibi bizim layout dosyamız, bu yukarıda bahsettiğimiz messages.blade.php dosyasını, container içerisinde include ederek alınacak hataları o anda kullanıcıya gösterilmesi sağlanacaktır.
+
+- resources/views/posts/create.blade.php içerisinde bir sürü açıklama mevcut, her bir bloğun ne işe yaradığını elimden geldiğince anlatmaya çalıştım, olurda bir sorunuz olursa sormaktan çekinmeyin lütfen.
+
+- app/Http/Controllers/PostsController.php Validate ile ilgili gerekli açıklama da içerisinde.
+
+- Evet, app/Http/Controllers/PostsController.php içerisinde ekleme işlemlerine dair olan yorum satırları olayı daha anlaşılabilir hale getirecektir. Bu sayade yeni bir post'u bir kullanıcı ekleyebilecek düzeye çekmiş oluyoruz. Bir web arayüzünden aldığımız bilgileri veri tabanına yazmamızı sağlayacak bir bölüm oluşturduk. Daha önce böyle bir şey yapayan biri için bu büyük bir adım (:)
+
+- Hadi Nav-Bar'ımıza yeni post ekleme butonu koyalım.
+    . resources/views/inc/navbar.blade.php
+
+- Postlarımızı daha opsiyonel ve şekillendirilebilir oluşturmak için Laravel içerisine koyabileceğimiz CK-Editor'den yadım alabiliriz. CK-Editor, yazdığınız yazı fontunu değiştirebildiğiniz, fotoğraf ekleyebildiğiniz, önemli bir noktası da bunları HTML olarak görüntüleyebilip, düzenleyebilip, kaydedebileceğiniz bir yapı sağlamaktadır. Bunun için;
+    `https://github.com/UniSharp/laravel-ckeditor`
+
+    . Composer yine bize bu konuda yardımcı olacak, GitHub hesabından görebileceğiniz gibi nasıl yüklendiğini aşağıdan da görebilirsiniz.
+
+    `composer require unisharp/laravel-ckeditor`
+
+    . LaravelCollective'de olduğu gibi yine ApplicationServiceProvider içerisine ekleme yapmamız gerekmektedir. config/app.php içerisindeki providers bölümüne aşağıdaki satırı ekliyoruz.
+    
+    `Unisharp\Ckeditor\ServiceProvider::class,`
+
+    . Son olarak da Resource'larımızı publish etmemizi istiyor bizden, bunu da Artisan aracılığı ile yapabiliriz.
+
+    `php artisan vendor:publish --tag=ckeditor`
+
+    . Kullanımına gelecek olursak, 
+
+        <script src="/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace( 'article-ckeditor' );
+        </script>
+
+        Bu satırları layout dosyamızın body bitişine eklememiz yeterli. Daha sonra da ck editör kullanacağımız textarea'nın id'sine article-ckeditor yazdığımızda otomatik olarak karşımıza gelecektir. Örneği uygulamak için önce resources/views/layouts/app.blade.php içerisine verilerimizi ekleyelim.
+
+        . Eğer bir hata alıyorsanız veya yükleyemiyorsanız, ck-editör'ün projenize eklediğiniz bölümdeki mutlak adresini yazmayı deneyin. Bende yükleme sorunu yaşadığım için, mutlak adresini girmek zounrda kaldım, bu yüzden resources/views/layouts/app.blade.php içerisinde yukarıdan farklı olarak gözükmektedir.
+
+. CK-Editör hakkında ufak bir detay vermiştim yukarıda, HTML olarak kayıt etme özelliği ile ilgili, verilerimizi bu şekilde saklayabildiğimiz gibi bu şekilde de çekebiliyoruz. Ancak bu şekilde eklediğimizi {{}} şeklinde göstermeye çalıştığımızda tarayıcı parse etmiyor ve önümüzü HTML tag'leri ile beraber gelmektedir. Bunu Önlemek için de resources/views/posts/show.blade.php içerisinde de görebileceğiniz gibi postlarımızı daha düzgün bir şeilde gösterebiliriz. Bunun için HTML taglarını işleyebilmek için {!! !!} şeklinde kullanmamız gerekmektedir. Bu sayede birçok HTML tagını kolaylıkla kullanaibliyoruz.
+
+. Bir sonraki bölümdee, silmeyi ve düzenlemeye bakacağız.
+
+[Part7]
+
+
+
+
     
 
 

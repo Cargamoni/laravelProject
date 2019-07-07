@@ -22,14 +22,14 @@
         
         Son olarak Form::submit() fonksiyonu ile veriler gönderilmektedir.--}}
 	<div class="form-group">
-        {{Form::label('title', 'Title')}}
-        {{Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'Title'])}}
+        {{Form::label('title', 'Başlık')}}
+        {{Form::text('title', '', ['class' => 'form-control', 'placeholder' => 'Başlık'])}}
     </div>
 
     <div class="form-group">
-            {{Form::label('body', 'Body')}}
-            {{Form::textarea('body', '', ['class' => 'form-control', 'placeholder' => 'Body'])}}
+            {{Form::label('body', 'Gövde')}}
+            {{Form::textarea('body', '', ['id' => 'article-ckeditor', 'class' => 'form-control', 'placeholder' => 'Gövde'])}}
         </div>
-        {{Form::submit('Submit', ['class' => 'btn btn-primary'])}}
+        {{Form::submit('Gönder', ['class' => 'btn btn-primary'])}}
     {{ Form::close() }}
 @endsection

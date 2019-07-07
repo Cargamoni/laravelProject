@@ -15,12 +15,22 @@
         {{-- Navbar buraya include ediliyor. --}}
         @include('inc.navbar')
 
+        {{-- Container bölümü burada başlıyor --}}
         <div class="container">
+
+            {{-- Hata mesajları ve sesion ile ilgili uyarılar bu bölüme yerleştirilmektedir. --}}
             @include('inc.messages')
 
             <!-- Bu bölüme pages içerisindeki content bölümü yani içerik gelecektir. Bu sayede tüm pages içerisindeki tekrarlayan kısımları atabiliriz. -->
             @yield('content')
         </div>
 
+        {{-- ck-editor'un çalışmasını sağlayacak olan js dosyasını include ediyoruz, böylelikle ID bölümünde 
+        article-ckeditor yazan textarea HTML elemanları için değişim sağlayacaktır. Kullanımını, resources/views/posts/create.blade.php
+        içerisinden kotnrol edebilirsiniz. Sayfaya yüklerken bulamadığı için mutlak adres vermek zorunda kaldım. --}}
+        <script src="/laravelProject/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+        <script>
+            CKEDITOR.replace('article-ckeditor');
+        </script>
     </body>
 </html>
