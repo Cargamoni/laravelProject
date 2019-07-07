@@ -98,7 +98,11 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        //
+        //Show içerisindeki gibi aslında postu id'sine göre getirip onun ile ilgili işlem yapacağız.
+        //Dolayısıyla bir de edit page oluşturmamız gerekmektedir. Create içerisinde ne varsa kopyalayıp
+        //bir takım değişiklikler yapacağız. Değişiklikler için edit.blade.php içerisine bakabilirsiniz.
+        $post =  Post::find($id);
+        return view('posts.edit')->with('post', $post);
     }
 
     /**
@@ -110,7 +114,20 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $this->validate($request, [
+            'title' => 'required',
+            'body' => 'required'
+        ]);
+
+        //Burada yaptığımız değişiklik, bir postumuz hali hazırda bulunduğu için 
+        //yeni bir post şeklinde açmayacağız, bunun yerine Request ile beraber gelen 
+        //id ile find fonksiyonumuzu çalıştıracağız.
+        $post = Post::find($id);
+        $post->title = $request->input('title');
+        $post->body = $request->input('body');
+        $post->save();
+        
+        return redirect('/posts')->with('success','Post Düzenlendi');
     }
 
     /**
@@ -121,6 +138,12 @@ class PostsController extends Controller
      */
     public function destroy($id)
     {
-        //
+        //Burada resources/views/posts/show.blade.php'dan gelen id'ye ait olan post silinecek. Öncelikle Postu bulmalı
+        //ondan sonra da delete fonksyionunu çalıştırmalıyız. Bu kadar basit.
+
+        $post = Post::find($id);
+        $post->delete();
+
+        return redirect('/posts')->with('success','Post Silindi');
     }
 }

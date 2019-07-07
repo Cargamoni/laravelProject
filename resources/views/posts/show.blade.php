@@ -24,4 +24,17 @@
         
         <button class="btn btn-md btn-primary"><a href="/laravelProject/public/posts">Geri Dön</a></button>  
         --}}
+
+    {{-- Part7 Düzenleme ve Silme Butonları --}}
+    {{-- Bu butona tıklandığı zaman app/Http/Controllers/PostsController.php içerisindeki edit fonksiyonu çalışacaktır.
+        Bunu düzenlemeye gidelim şimdide. --}}
+    <a href="/laravelProject/public/posts/{{$post->id}}/edit" class="btn btn-md btn-secondary mt-1">Düzenle </a>
+
+    {{-- Şimdiii, eğer biz bir formu silmek istiorsak, bunun bilgilerini bir şekilde gönderebilmemiz gerekiyor. Bunun için
+        Create page'inde olduğu gibi bir form yapısına ihtiyaç duyuyoruz. --}}
+
+        {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST', 'class' => 'float-right'])!!}
+            {{Form::hidden('_method', 'DELETE')}}
+            {{Form::submit('Postu Sil', ['class' => 'btn btn-danger mt-1'])}}
+        {!!Form::close()!!}
 @endsection

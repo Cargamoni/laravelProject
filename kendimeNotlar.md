@@ -318,8 +318,12 @@
 
 [Part7]
 
+- Bir post oluşturabildiğimiz gibi bunları silip, düzenleyebilmemiz de gerekmektedir. resources/views/posts/show.blade.php içerisinden yani postların okunduğu bölümden düzenleme ve silme butonları ekleyelim. Gerekli değişiklikleri oradan kontrol edebilirsiniz.
 
+|        | PUT|PATCH | posts/{post}      | posts.update  | App\Http\Controllers\PostsController@update   | web          |
+|        | DELETE    | posts/{post}      | posts.destroy | App\Http\Controllers\PostsController@destroy  | web          |
 
+- Yukarıdaki `php artisan route:list` çıktısından bir bölüm. Sadece bunları almamın sebebi Form'larda verilerin transfer etme metodları üzerine birkaç cümle kuracak olmam. Düzenleme yani update bölümünde Laravel'in PUT veya Patch, silmek yani destroy işlemi için ise DELETE metodlarını desteklediğini yukarıda da görebiliyoruz. Dolayısıyla resources/views/posts/show.blade.php ve resources/views/posts/edit.blade.php dosyaları içerisinde gördüğünüz hidden şeklinde belirtlimiş metodlar mevcut. Bunlar POST şeklinde pass edilen yani gönderilen verilerin görünürde POST ancak gizli olarak PUT veya PATCH, DELETE metodları kullanılarak gönderilmesini sağlamaktadır (Yanlış anladıysam, bir hatam varsa lütfen düzeltin).
 
     
 
