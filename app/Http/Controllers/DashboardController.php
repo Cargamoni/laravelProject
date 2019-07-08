@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\User;
+use DB;
 
 class DashboardController extends Controller
 {
@@ -23,6 +25,17 @@ class DashboardController extends Controller
      */
     public function index()
     {
-        return view('dashboard');
+        //User tablosundan kullanıcının id'si aracılığı ile giriş yapmış
+        //kullanıcının bilgilerini dashboard'a gönderiyoruz. Posts.php içerisinden
+        $user_id = auth()->user()->id;
+
+        // $user = User::find($user_id);
+        // return view('dashboard')->with('posts', $user->posts);
+
+        //Çok varsa bu şekilde kullanabiliriz. Sayfalandıralım, sanırım bunu kullanabildiğim
+        //her yerde kullanacacğım (:
+        $user = User::find($user_id)->posts()->paginate(4);
+
+        return view('dashboard')->with('posts', $user);
     }
 }

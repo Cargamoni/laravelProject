@@ -13,7 +13,8 @@
                 {!!$post->body!!}
             </div>
             <hr>
-            <small>Oluşturulma tarihi : {{$post->created_at}}</small>
+            
+            <small>{{$post->user->name}} tarafından {{$post->created_at}} tarihinde oluşturuldu. </small>
     </div>
     <a href="/laravelProject/public/posts" class="btn btn-md btn-primary mt-1">Geri Dön</a>
      {{-- 

@@ -413,6 +413,28 @@
     
 [Part9]
 
+- Burada yapacağımız durum tablolar arasındaki ilişkiler ile ilgleneceğiz. Oluşturulacak Post'lar bir kullanıcı ile ilişkili olduğu için hangi postun kime ait olduğunu belirtebiliyor olmamız gerekmektedir. Şuanki durumda yapacağımız ise Dashboard üzerinde giriş yapmış kullanıcının postlarını göstermek istiyoruz. Bir ilişki oluşturmak Laravel ile aslında çok kolay, app/Post.php içerisine gidiyoruz.
+
+    . app/Post.php
+        public function user(){
+            return $this->belongsTo('App\User');
+        }
+
+    . app/User.php
+        public function posts(){
+            return $this->hasMany('App\Post');
+        }
+
+    . Bu satırları dosyalarımıza ekledikten sonra user ile posts arasında bir ilişki olduğunu ifade ediyoruz. İlişkinin türünü de User.php içerisinde belirtiyoruz. Post'un kullanıcıya ait olduğunu Post.php içerisinde bir kullanıcının birden fazla post'unun olabileceğini de User.php içerisinde fonksiyonlarla tanımlıyoruz.
+
+. app/Http/Controllers/DashboardController.php içerisinde kullanıcının bilgilerini view'a gönderiyoruz. resources/views/dashboard.blade.php içerisinde de bu bilgileri göstermek için değişiklikleri yapacağız. Her bir kişiye ait olan post'ları kendi dashboardlarında gösterilecek. Gerekirse düzenleme ve silme işlemlerini gerçekleştirilecek duruma getilirecektir.
+
+- resources/views/dashboard.blade.php içerisinde HTML aracılığıyla Başlık bilgisini çektik ve post sahibi, kendi mesajlarını düzenleyeiblecek veya silebilecektir. Detayları için dosyaya bakabilirsiniz.
+
+
+User::find(122)->sites->paginate(); doesnt work because you are trying to call the paginate method on the sites collection. With the parenthesis you call it on the return value of the relationship method, which is the relationship object, which can be used as a query builder.
+
+
 
 
 

@@ -8,14 +8,14 @@
             <a href="/laravelProject/public/posts/{{$post->id}}" class="card-link text-dark">
                 <div class="card card-body">
                         <h3>{{$post->title}}</h3>
-                        <small>Oluşturulma tarihi : {{$post->created_at}}</small>
+                        <small>{{$post->user->name}} tarafından {{$post->created_at}} tarihinde oluşturuldu. </small>
                 </div>
             </a>
         @endforeach
         {{-- Burada sayfalandırma işlemini gerçekleştiren links fonksiyonu, gönderilen kaç sayfa ise 
             burayı ona göre ayarlayıp, postların yazdığınız sınırda gösterilmesini ve kalanını
             bir diğer sayfaya aktarılmasına yardımcı olacak numaralandırma işlemini yapıyor. --}}
-        <div class="pull-right mt-2">
+        <div class="float-right mt-2">
             {{$posts->links()}}
         </div>
     @else

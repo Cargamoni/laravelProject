@@ -10,27 +10,28 @@
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <!-- Left Side Of Navbar -->
             <ul class="navbar-nav mr-auto">
-
-            </ul>
-
-            <ul class="navbar-nav mr-auto">
-
                 {{-- active classı çıkarıldı şimdilik, daha sonra dinamik bir şekilde yapılacak --}}
                 <li class="nav-item">
-                    <a class="nav-link" href="/laravelProject/public/">Home <span class="sr-only">(current)</span></a>
-                </li>
-    
-                <li class="nav-item">
-                    <a class="nav-link" href="/laravelProject/public/about">About</a>
-                </li>
-    
-                <li class="nav-item">
-                        <a class="nav-link" href="/laravelProject/public/services">Services</a>
-                </li>
-    
-                <li class="nav-item">
-                        <a class="nav-link" href="/laravelProject/public/posts">Posts</a>
-                </li>
+                        <a class="nav-link" href="/laravelProject/public/">Home <span class="sr-only">(current)</span></a>
+                    </li>
+        
+                    <li class="nav-item">
+                        <a class="nav-link" href="/laravelProject/public/about">About</a>
+                    </li>
+        
+                    <li class="nav-item">
+                            <a class="nav-link" href="/laravelProject/public/services">Services</a>
+                    </li>
+        
+                    <li class="nav-item">
+                            <a class="nav-link" href="/laravelProject/public/posts">Posts</a>
+                    </li>
+            </ul>
+
+            {{-- Middle Of Navbar --}}
+            <ul class="navbar-nav mr-auto">
+
+
             </ul>
 
             <!-- Right Side Of Navbar -->
