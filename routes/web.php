@@ -41,3 +41,7 @@ Route::get('/services', 'PagesController@services');
 
 Route::resource('posts', 'PostsController');        //Kontrol içerisinde oluşturulan her bir fonksiyon için yönlendirme oluşturur.
 
+
+Auth::routes();
+
+Route::get('/dashboard', 'DashboardController@index');

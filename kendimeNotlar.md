@@ -335,9 +335,83 @@
     app/Http/Controllers/Auth/RegisterController.php
     app/Http/Controllers/Auth/ResetPasswordController.php
     app/Http/Controllers/Auth/VerificationController.php
-    şeklinde bir sürü kimilk doğrulama ve yönetimiyle ilgili dosyalraın olduğunu grebiliriz.
+    şeklinde bir sürü kimilk doğrulama ve yönetimiyle ilgili dosyalraın olduğunu görebiliriz.
 
+- Aynı zamanda hatırlarsanız yaptığımız database migration sonucunda, veri tabanı tablolarımızın içerisinde bir users tablomuzun oluştuğunu da görmüştük. Laravel bize User Authentication ile ilgili çok büyük bir yardımda bulunuyor. Yaptığı şey aslında şu, Artisan ile beraber koştuğumuz komutla kendisi bir layout oluşturuyor. Bu layout içerisinde login ve register bölümleri mevcut, aynı zamanda yukarıda görebildiğiniz parola sıfılama, giriş kontrolleri gibi özellikleri de var. Laravel bizim için bu sayfaları oluşturup. Kullanıma hazır bir hale getiriyor. Users tablosunu ve sütunlarını aşağıda inceleyebilirisniz.
+    . `php artisan tinker` ile tablolarımızı ve users tablosnun içereeceği bilgileri görebilirsiniz.
+        >>> $tables = \DB::select('show tables');
+        => [
+            {#2962
+            +"Tables_in_laravelProject": "migrations",
+            },
+            {#2960
+            +"Tables_in_laravelProject": "password_resets",
+            },
+            {#2967
+            +"Tables_in_laravelProject": "posts",
+            },
+            {#2969
+            +"Tables_in_laravelProject": "users",
+            },
+        ]
+        >>> $columns = \Schema::getColumnListing('users');
+        => [
+            "id",
+            "name",
+            "email",
+            "email_verified_at",
+            "password",
+            "remember_token",
+            "created_at",
+            "updated_at",
+        ]
+
+- User Authentication'ı aktif hale getirebilmek için `php artisan make:auth` komutunu yazıyoruz. Bu komutu koştuğumuz zaman terminal üzerinde bize bir soru yöneltecektir. resources/views/layouts/app.blade.php diye bir dosya zaten var bunu değiştireyim mi abi ? Önceki olanları saklamak niyetinde olduğum için bu dosyanın sonuna .old ekleyerek değişiklikleri kaybetmemek ve yenisi üzerinde çalışabilmek için bu şekilde yapıp, okuyanlara da yardımcı olmasını sağlıyorum.
+    . app/Http/Controllers/Auth içerisindeki tüm Controller yapısı aktif hale getiriyor Artisan bizim için. Bu kolaylık bizi bir çok angaryadan kurtarıyor.
+
+- Komutu çalıştırdığımızda daha önce yaptığımız layout değiştiği için oluşturduğumuz linklerde onunla beraber gidiyor. Eskisini tutmamız burada bize fayda sağlayacak.
+
+    . resources/views/layouts/app.blade.php.old ihtiyacımız olan bölümleri resources/views/layouts/app.blade.php içerisine aktarmaya başlayalım. Normalde biz Nav-Bar'ı include ediyoruz ancak Laravel bize app.blade içerisinde getiriyor öncelikle bunu bir düzenleyelim.
+
+- Burada değiştirmek isteyebileceğimiz bir bölüm mevcut. Dilerseniz aynı şekilde de bırakabilirsiniz ancak, normalde home dediğimiz kavram ana sayfayı temsil etmektedir. Bir kullanıcı giriş yaptığı zaman dashboard kavramı daha uygun olur. Bu yüzden yönlendirmeler olsun, yeni oluşturulan resources/views/home.blade.php olsun, routes/web.php içerisindeki yönlendirmeler olsun bunları home yerine dashboard ile değiştiriyorum.
+    . app/Http/Controllers/Auth/LoginController.php
+        /home -> /dashboard
+    . app/Http/Controllers/Auth/RegisterController.php
+        /home -> /dashboard
+    . app/Http/Controllers/Auth/ResetPasswordController.php
+        /home -> /dashboard
+    . app/Http/Controllers/Auth/VerificationController.php
+        /home -> /dashboard
+    . routes/web.php
+        Route::get('/home', 'HomeController@index')->name('home'); -> Route::get('/dashboard', 'DashboardController@index');
+            Burada değiştrdiğimiz HomeController ismini app/Http/Controllers/HomeController.php -> app/Http/Controllers/DashboardController.php olarak da değiştirmeyi unutmayın.
+    . resources/views/home.blade.php -> resources/views/dashboard.blade.php
+    . app/Http/Controllers/DashboardController.php
+        return view('home'); -> return view('dashboard');
+        class HomeController extends Controller -> class DashboardController extends Controller
+
+- Tüm değişiklikleri yaptıktan sonra resources/views/inc/navbar.blade.php içerisine giriş yapıldığında dashboard'a gidebilmek için bir link ekledim. Kullanıcı giriş yaptığında bu değişiklikleri yaptığınızda bizi resources/views/dashboard.blade.php yönlendirecek ve buradan bir post oluşturmamızı sağlayacak butonu da ekledik.
+
+- Artık kullanıcı kimlik doğrulama işlemlerini aktif hale getirdiğimize göre, postlarımızı hangi kullanıcının eklediğini belirtmemizin vakti geldi. phpMyAdmin üzerinden veya tinker'dan posts tablosunu kontrol ederseniz herhangi bir user_id bölümünün olmadığını görebilirsiniz. Sistemde giriş yapmış kullanıcı bir post oluşturduğunda bunu belirtemiyoruz. Bunu elemek için ise Artisan'dan yardım alacağız.
+    . `php artisan make:migration add_user_id_to_posts`
+        Komutunu koşuyoruz. Önceden de yaptığımız gibi bu bize database/migrations/2019_07_08_074019_add_user_id_to_posts.php oluşturuyor. Oluşturduğumuz migration içerisine baktığımızda up ve down fonksiyonlarını görebiliyoruz.
+
+        . up fonksiyonu içerisine 
+            Schema::table('posts', function($table){
+                $table->integer('user_id');
+            });
+
+        . down fonksyionu içerisine
+            Schema::table('posts', function($table){
+                $table->dropColumn('user_id');
+            });
+
+        Artisan bize bu fonksiyonları zaten oluşturuyor. Bu yüzden sadece up fonksiyonu içerisine $table->integer('user_id'); down fonksiyonu içerisine de $table->dropColumn('user_id'); eklememiz yeterli olacaktır. Yoks sizin yazmanız gerekir.
     
+    . İşlemlerimizi yaptıktan sonra artık migrate işlemini gerçekleştirebiliriz. `php artisan migrate` Eklenilen sütunları görmek için tinker veya phpmyadmin'den posts tablosunu kotnrol edebilirsiniz. Manuel olarak 0 girilmiş satırları düzeltebiliriz şimdilik. Ancak post oluşturulduğunda ekleme yapması için app/Http/Controllers/PostsController.php içerisinde store fonksiyonunu düzenlememiz gerekecektir.
+        . $post->user_id = auth()->user()->id;
+    
+[Part9]
 
 
 

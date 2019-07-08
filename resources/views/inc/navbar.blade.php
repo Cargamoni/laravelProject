@@ -1,44 +1,72 @@
-{{-- 
-    https://getbootstrap.com/docs/4.3/examples/starter-template/
-    Bu adresten nav-bar alınarak düzenlendi.
-    --}}
+<nav class="navbar navbar-expand-md navbar-dark bg-dark shadow-sm">
+    <div class="container">
+        <a class="navbar-brand" href="{{ url('/') }}">
+            {{ config('app.name', 'Laravel') }}
+        </a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
+            <span class="navbar-toggler-icon"></span>
+        </button>
 
-{{-- navbar-fixed-top classı kaldırıldı. --}}
-<nav class="navbar navbar-expand-md navbar-dark bg-dark">       
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <!-- Left Side Of Navbar -->
+            <ul class="navbar-nav mr-auto">
 
-    {{-- navbar-brand proje adı çağırıldı config içerisinden --}}
-    <a class="navbar-brand" href="/laravelProject/public/">{{config('app.name', 'laravelProject')}}</a>
+            </ul>
 
-    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarsExampleDefault" aria-controls="navbarsExampleDefault" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-    </button>
+            <ul class="navbar-nav mr-auto">
 
-    <div class="collapse navbar-collapse" id="navbarsExampleDefault">
-        <ul class="navbar-nav mr-auto">
-
-            {{-- active classı çıkarıldı şimdilik, daha sonra dinamik bir şekilde yapılacak --}}
-            <li class="nav-item">
-                <a class="nav-link" href="/laravelProject/public/">Home <span class="sr-only">(current)</span></a>
-            </li>
-
-            <li class="nav-item">
-                <a class="nav-link" href="/laravelProject/public/about">About</a>
-            </li>
-
-            <li class="nav-item">
-                    <a class="nav-link" href="/laravelProject/public/services">Services</a>
-            </li>
-
-            <li class="nav-item">
-                    <a class="nav-link" href="/laravelProject/public/posts">Posts</a>
-            </li>
-        </ul>
-
-        {{-- Bu link sağ tarafta dursun. --}}
-        <ul class="nav navbar-nav navbar-right">
+                {{-- active classı çıkarıldı şimdilik, daha sonra dinamik bir şekilde yapılacak --}}
                 <li class="nav-item">
-                        <a class="nav-link" href="/laravelProject/public/posts/create">Post Oluşturun</a>
+                    <a class="nav-link" href="/laravelProject/public/">Home <span class="sr-only">(current)</span></a>
                 </li>
-        </ul>
+    
+                <li class="nav-item">
+                    <a class="nav-link" href="/laravelProject/public/about">About</a>
+                </li>
+    
+                <li class="nav-item">
+                        <a class="nav-link" href="/laravelProject/public/services">Services</a>
+                </li>
+    
+                <li class="nav-item">
+                        <a class="nav-link" href="/laravelProject/public/posts">Posts</a>
+                </li>
+            </ul>
+
+            <!-- Right Side Of Navbar -->
+            <ul class="navbar-nav ml-auto">
+                <!-- Authentication Links -->
+                @guest
+                    <li class="nav-item">
+                        <a class="nav-link" href="{{ route('login') }}">{{ __('Login') }}</a>
+                    </li>
+                    @if (Route::has('register'))
+                        <li class="nav-item">
+                            <a class="nav-link" href="{{ route('register') }}">{{ __('Register') }}</a>
+                        </li>
+                    @endif
+                @else
+                    <li class="nav-item dropdown">
+                        <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                            {{ Auth::user()->name }} <span class="caret"></span>
+                        </a>
+
+                        <div class="dropdown-menu dropdown-menu-right" aria-labelledby="navbarDropdown">
+                            {{-- Bu bizi dashboard'a götürecek bir link --}}
+                            <a class="dropdown-item" href="/laravelProject/public/dashboard">Dashboard</a>
+
+                            <a class="dropdown-item" href="{{ route('logout') }}"
+                               onclick="event.preventDefault();
+                                             document.getElementById('logout-form').submit();">
+                                {{ __('Logout') }}
+                            </a>
+                            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+                                @csrf
+                            </form>
+                        </div>
+                    </li>
+                @endguest
+            </ul>
+        </div>
     </div>
 </nav>

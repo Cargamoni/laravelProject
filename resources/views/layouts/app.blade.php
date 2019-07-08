@@ -1,36 +1,38 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="{{ str_replace('_', '-', app()->getLocale()) }}">
-    <head>
-        <meta charset="utf-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
 
-        {{-- Burada varsayılan css çağırılmaktadır --}}
-        <link rel="stylesheet" href="{{asset('css/app.css')}}" >
+    <!-- CSRF Token -->
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
-        <!-- Burada .env içerisinden APP_NAME çekilerek title'a yazılır, eğer yoksa diğer tırkan içerisindeki değer işlenir. -->
-        <title>{{config('app.name', 'laravelProject')}}</title>
-    </head>
-    <body>
-        
-        {{-- Navbar buraya include ediliyor. --}}
+    <title>{{ config('app.name', 'Laravel') }}</title>
+
+    <!-- Scripts -->
+    <script src="{{ asset('js/app.js') }}"></script>
+
+    <!-- Fonts -->
+    <link rel="dns-prefetch" href="//fonts.gstatic.com">
+    <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+
+    <!-- Styles -->
+    <link href="{{ asset('css/app.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
         @include('inc.navbar')
+        <main class="py-4">
+            <div class="container">
+                @include('inc.messages')
+                @yield('content')
+            </div>
+        </main>
+    </div>
 
-        {{-- Container bölümü burada başlıyor --}}
-        <div class="container">
-
-            {{-- Hata mesajları ve sesion ile ilgili uyarılar bu bölüme yerleştirilmektedir. --}}
-            @include('inc.messages')
-
-            <!-- Bu bölüme pages içerisindeki content bölümü yani içerik gelecektir. Bu sayede tüm pages içerisindeki tekrarlayan kısımları atabiliriz. -->
-            @yield('content')
-        </div>
-
-        {{-- ck-editor'un çalışmasını sağlayacak olan js dosyasını include ediyoruz, böylelikle ID bölümünde 
-        article-ckeditor yazan textarea HTML elemanları için değişim sağlayacaktır. Kullanımını, resources/views/posts/create.blade.php
-        içerisinden kotnrol edebilirsiniz. Sayfaya yüklerken bulamadığı için mutlak adres vermek zorunda kaldım. --}}
-        <script src="/laravelProject/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
-        <script>
-            CKEDITOR.replace('article-ckeditor');
-        </script>
-    </body>
+    <script src="/laravelProject/vendor/unisharp/laravel-ckeditor/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('article-ckeditor');
+    </script>
+</body>
 </html>

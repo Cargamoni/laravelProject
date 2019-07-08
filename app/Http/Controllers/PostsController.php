@@ -66,9 +66,13 @@ class PostsController extends Controller
         //Dosyanın başında use ile beraber çağırdığımız için sadece new Post şeklinde
         //yazmamız yetiyor.
 
+        //Yeni eklediğimiz sütun için auth bize kullanıcımızın id'sini vererek tablo içerisinde
+        //id bölümünü doldurmamızı sağlıyor.
+
         $post = new Post;
         $post->title = $request->input('title');
         $post->body = $request->input('body');
+        $post->user_id = auth()->user()->id;
         $post->save();
         
         //İşlem tamamlandıktan sonra postların olduğu sayfaya redirect edilmekteyiz.
