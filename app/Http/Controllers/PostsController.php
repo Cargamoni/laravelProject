@@ -9,6 +9,19 @@ use DB;                                     //SQL sorgularını kulanabilmemiz i
 class PostsController extends Controller
 {
     /**
+     * Create a new controller instance.
+     * Kullanıcı olmayanların bu alanda giriş yapmadan bir post oluşturmasını engelledik bununla beraber.
+     * except ile beraber hangi fonksiyonların daha doğrusu hangi view'ların bundan mahrum bırakılacağını
+     * seçebiliyoruz.
+     * @return void
+     */
+    public function __construct()
+    {
+        //$this->middleware('auth');
+        $this->middleware('auth', ['except' => ['index','show']]);
+    }
+
+    /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
@@ -106,6 +119,11 @@ class PostsController extends Controller
         //Dolayısıyla bir de edit page oluşturmamız gerekmektedir. Create içerisinde ne varsa kopyalayıp
         //bir takım değişiklikler yapacağız. Değişiklikler için edit.blade.php içerisine bakabilirsiniz.
         $post =  Post::find($id);
+
+        //Doğru kullanıcının kontrol edildiği bölüm burası
+        if(auth()->user()->id !== $post->user_id) {
+            return redirect('posts')->with('error', 'Unauthorized Page');
+        }
         return view('posts.edit')->with('post', $post);
     }
 
@@ -146,8 +164,13 @@ class PostsController extends Controller
         //ondan sonra da delete fonksyionunu çalıştırmalıyız. Bu kadar basit.
 
         $post = Post::find($id);
-        $post->delete();
 
+        //Doğru kullanıcının kontrol edildiği bölüm burası
+        if(auth()->user()->id !== $post->user_id) {
+            return redirect('posts')->with('error', 'Unauthorized Page');
+        }
+
+        $post->delete();
         return redirect('/posts')->with('success','Post Silindi');
     }
 }

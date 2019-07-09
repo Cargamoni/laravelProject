@@ -440,6 +440,17 @@
 
 [Part10]
 
+- Bu kısımda ilgileneceğimiz bölüm giriş yapmamış olanların direk url üzeirnden laravelProject/public/posts/create şeklinde giriş yaptıklarında bir post girmelerini önlemeye çalışacağız. Post'lara giriş yaptıklarında da o kullanıcıya ait ise post Düzenle ve Sil butonlarının gösterilmesini sağlayacağız. Auth ile beraber kullanıcı işlemlerini aktif hale getirmiştik zaten. Bunun için neler yapabileceğimize bir bakalım. 
+
+- app/Http/Controllers/DashboardController.php içerisinde bulunan __construct fonksiyonu, eğer kullanıcı giriş yapmamışsa bu sayfaya giriş yapamamasını sağlayan bir önleyici olarak çalışmaktadır. basit olarak bunu alıp app/Http/Controllers/PostsController.php kopyalayarak işe başlayalım. Bunu yaptığımızda bizi bu şekilde giriş yapmamızı engelleyecektir. Ancak bu sefer linklerden Posts'a tıkladığımızda hiçbir şekilde yazıları göremeyeceğiz. Bunun için bir takım değişiklikler yapmamız gerekiyor.
+
+- app/Http/Controllers/PostsController.php içerisinde değişikliklerimi yaptıktan sonra kullanıcı olmayanlara Düzenleme Oluşturma ve Silme gibi işlemleri yapmalarını engelledik. Ancak hala Post'ların görüntülkendiği resources/views/posts/show.blade.php içerisinde kullanıcı olsa da olmasa da Düzenle ve Sil butonları çalışmakta. Bunu da engelleyelim.
+    . resources/views/posts/show.blade.php içerisinde bu linklerimizin olduğu bölümü if içerisine alıp guest olup olmadığına göre gösterilecek şekilde ayarlıyoruz. İlk kontrol bloğumuz guest olup olmadığını kontrol edicek. İkinci kontrol bloğumuz ilse bu post'un giriş yapmış kullanıcıya ait olup olmadığını kontrol edecek. Böylelikle bir kullanıcının Post'unu başka bir kullanıcı silemeyecek.
+
+- Ancak hala daha yapmamız gerken, önlememiz gereken bir durum mevcut. laravelProject/public/posts/10 şeklinde bir URL'e ait bir postumuz olsun. Post bizim değilse hala daha laravelProject/public/posts/10/edit yazarak bu postu düzenleyebiliyoruz. Bunu da enlgellememiz gerekmektedir. Bunun için app/Http/Controllers/PostsController.php içerisinde edit fonksiyonunu düzenlememiz gerekiyor.
+    . Sadece düzenleme için değil, aynı işlemi silme için de yapmamız gerekiyor. Dolayısıyla Edit içerisinde oluşturduğumuz kontrol yapısını destroy fonksiyonu içerisine de ekliyoruz. Bu sayede bir başkasının postunu silmeyi de engellemiş oluyoruz.
+
+[Part11]
 
 
 
