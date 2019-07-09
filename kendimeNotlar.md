@@ -452,6 +452,8 @@
 
 [Part11]
 
+- Bu son bölümde, dosya yükleme ile ilgileneceğiz. 
+
 
 
 
