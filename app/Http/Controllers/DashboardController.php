@@ -4,7 +4,6 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\User;
-use DB;
 
 class DashboardController extends Controller
 {
@@ -34,8 +33,8 @@ class DashboardController extends Controller
 
         //Çok varsa bu şekilde kullanabiliriz. Sayfalandıralım, sanırım bunu kullanabildiğim
         //her yerde kullanacacğım (:
-        $user = User::find($user_id)->posts()->paginate(4);
+        $user_posts = User::find($user_id)->posts()->paginate(4);
 
-        return view('dashboard')->with('posts', $user);
+        return view('dashboard')->with('posts', $user_posts);
     }
 }

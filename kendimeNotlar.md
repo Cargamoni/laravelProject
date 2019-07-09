@@ -431,8 +431,15 @@
 
 - resources/views/dashboard.blade.php içerisinde HTML aracılığıyla Başlık bilgisini çektik ve post sahibi, kendi mesajlarını düzenleyeiblecek veya silebilecektir. Detayları için dosyaya bakabilirsiniz.
 
+- app/Http/Controllers/DashboardController.php içerisindeki index fonksiyonuyla o kullanıcıya ait olanları sayfaya gönderiyoruz. Az miktarda postu olan birisi için görünümü sıkıntı çıkarmayacaktır ancak bir sürü post'a sahip birisi sürekli aşağı inme ihtiyacı duyabilir. Bu yüzden daha önce postların görüntülendiği sayfada yaptığımız gibi sayfalandırma işlemine tabi tuttum. Ancak bunu başta direk DB classı kullanarak yapmıştık app/Http/Controllers/PostsController.php içerisinde, biraz kafamı karıştırdı bu durum. Önce `$user = User::find($user_id);` şeklinde çektiğim veriyi sayfalandırmak istedim öncelikle `$posts = Post::orderBy('id','desc')->paginate(3);` şeklinde olacağını düşünüp direk onu denedim ancak, User::find bana o kullanıcının bilgilerini getirmekte, daha sonra return ettiğim veriye baktığımda `return view('dashboard')->with('posts', $user->posts);` olduğunu gördüm. O kullanıcıa ait olan postları ilişkilendirildiği için bu şekilde çekebiliyoruz, ancak `$user->posts->paginate(5)` şeklinde bir değişken içerisine atamayı denediğimde Laravel hata verdi. Biraz kafa yorduktan sonra çözüm aslında bastti.
+    . Sebebine gelecek olursak `$posts = Post::orderBy('id','desc')->paginate(3);`, burada Elequent bize Post içerisinde orderBy ile veritabanından çektiğimiz veriyi sayfalandırmayı kullanabileceğimiz paginate fonksiyonunu sağlıyor. Evet şuanda 
+        `$user = User::find($user_id);`
+        `return view('dashboard')->with('posts', $user->posts);`
+    bu iki satırla verileri gönderebiliyoruz nakca bu sadece postları geri döndürecektir. Burada `$users->posts()` şeklinde kullanmamız gerekiyor ki veriler arasındaki ilişkiyi tanımlayabilelim ve bu ilişkiye ait olan verileri çekerken sanki Post içerisinde veri çekiyormuş gibi aldığımız verileri işleme tabi tutabilelim. `$user_posts = User::find($user_id)->posts()->paginate(4);` kesin çözümümüz olarak karşımıza çıkıyor.
 
-User::find(122)->sites->paginate(); doesnt work because you are trying to call the paginate method on the sites collection. With the parenthesis you call it on the return value of the relationship method, which is the relationship object, which can be used as a query builder.
+
+[Part10]
+
 
 
 
