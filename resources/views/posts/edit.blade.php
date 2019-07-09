@@ -6,7 +6,7 @@
     bölüm değiştiriliyor. Eksra olarak da id gönderiliyor. id ile beraber çektiğimiz verilerin içeriği textbox ve text 
     area içerisine doduruyoruz, böylelikle düzenleme seçeneiğini kullanıcıya verebiliyoruz.
     --}}
-    {{ Form::open(['action' => ['PostsController@update', $post->id], 'method' => 'POST']) }}
+    {{ Form::open(['action' => ['PostsController@update', $post->id], 'method' => 'POST', 'enctype' => 'multipart/form-data']) }}
         <div class="form-group">
             {{Form::label('title', 'Başlık')}}
             {{Form::text('title', $post->title, ['class' => 'form-control', 'placeholder' => 'Başlık'])}}
@@ -15,6 +15,9 @@
         <div class="form-group">
             {{Form::label('body', 'Gövde')}}
             {{Form::textarea('body', $post->body, ['id' => 'article-ckeditor', 'class' => 'form-control', 'placeholder' => 'Gövde'])}}
+        </div>
+        <div class="form-group">
+                {{Form::file('cover_image')}}
         </div>
         {{-- Burada gizli bir şekilde metodumuzun değiştirmek durumundayız, Laravel ile oluşturduğumuz route bizim posts.update
             fonksiyonumuzun sadece PUT veya PATCH metodlarıyla veri göndermemizi kabul ettiği için bu yola başvuruyoruz. Aynı zamanda

@@ -34,11 +34,11 @@
                                 <td>{{$post->title}}</td>
                                 <td></td>
                                 <td>
-                                    <a href="/laravelProject/public/posts/{{$post->id}}/edit" class="btn btn-md btn-secondary float-right">Düzenle </a>
-                                    {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST', 'class' => 'float-right mr-1'])!!}
+                                    {!!Form::open(['action' => ['PostsController@destroy', $post->id], 'method' => 'POST', 'class' => 'float-right ml-1'])!!}
                                         {{Form::hidden('_method', 'DELETE')}}
                                         {{Form::submit('Postu Sil', ['class' => 'btn btn-danger'])}}
                                     {!!Form::close()!!}
+                                    <a href="/laravelProject/public/posts/{{$post->id}}/edit" class="btn btn-md btn-secondary float-right">Düzenle </a>
                                 </td>
                             </tr>
                             @endforeach

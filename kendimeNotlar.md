@@ -452,7 +452,36 @@
 
 [Part11]
 
-- Bu son bölümde, dosya yükleme ile ilgileneceğiz. 
+- Bu son bölümde, dosya yükleme ile ilgileneceğiz. Bunun için yine form'dan yararlanacağız.
+    . resources/views/posts/create.blade.php yapılan değişiklikleri kontrol edebilirsiniz. Yorum satırlarında gerekli bilgilendirme mevcuttur.
+
+- Yeni bir sütun eklememiz gerekiyor Posts tablomuzun içerisine. Bu da hangi postta görüntülenecek olan o posta ait olan başlık fotoğrafını belirtilecek olan sütundur. Bunun için yeniden bir migration işlemi yapmamız gerekiyor.
+    . `php artisan make:migration add_cover_image_to_posts`
+    Daha sonra öncesinde eklediğimiz migration dosyasında olduğu gibi yani database/migrations/2019_07_08_074019_add_user_id_to_posts.php burda, up and down fonksiyonlarını oluşturuyoruz. Değişikilikler yine dosya içerisinden kontrol edilebilir. 
+
+    . `php artisan migrate`
+    Komutunu koşturup veritabanı tablomuza sütun eklemeyi tamamlıyoruz.
+
+- Daha sonra app/Http/Controllers/PostsController.php içerisine gidip dosyamızı veritabanımıza kayıt edeceğimiz store fonksiyonunu düzenliyoruz. Bunun için Laravel storage içerisinde bu resimler için klasör oluşturulacak ve dosylara burada saklanacak. Bu dosyaların herkez tarafından okunabileceği bir bölümde oluşturulması gerekmektedir. Bu yüzden aynı dizinin bir kısayolunu bir diğer deyişle sembolik linkini public içerisinde oluşturmamız gerekmektedir.
+    . `php artisan storage:link`
+    Bu sayede public içerisinde bir stroage kısayolumuz oluşacaktır. storage içerisine ne koyarsanız public/storage içerisinde de aynı dosyalar görünüp erişilebilir hale gelecektir.
+    lrwxrwxrwx  1 cargamoni cargamoni   51 Tem  9 11:54 storage -> /opt/lampp/htdocs/laravelProject/storage/app/public
+
+- Resim yüklendiğinde bir tarafta başlık resmi bir tarafta da diğer bilgilerin yer almasını ayarlamak için resources/views/posts/index.blade.php içerisinde değişikliklerimi yapıyoruz. Aynı şekilde gösterildiğinde de gözükmesi için resources/views/posts/show.blade.php içerisinde de değişikliklerimizi yapıyoruz.
+
+- Post oluşturulurken resim ekleyebiliyoruz ancak düzenleme aşamasında bunu değiştirebilecğeimiz de bir alan bulunmalı. Değiştirilmediği taktirde de değişiklik olmamalı. Bunun için resources/views/posts/edit.blade.php içerisine geçiyoruz. Ancak ondan önce resources/views/posts/edit.blade.php içerisine resources/views/posts/create.blade.php içerisindeki file form'u ekleyelim. Form'un başına enctype eklemeyi de unutmayalım. Değişiklikleri yukarıdaki bahsettiğim dosyalardan takip edebilirsiniz.
+
+- Son olarak da Postu sildiğinizde veya düzenlediğinizde eski resmi silmeyi düzenleyelim. Böylelikle gereksiz veri fazlalığını da önlemiş olacağız. Bunun için yeniden app/Http/Controllers/PostsController.php içerisine gidiyoruz. Destroy fonskyionunu güncelliyoruz. Bunun için storage kütüphanesini getirmemiz gerekior.
+    . use Illuminate\Support\Facades\Storage;
+    satırını kütüphaneleri çağırdığımız bölüme ekliyoruz.
+
+    . Destroy ve Update fonksiyonlarını güncelledik. Destroy için direk silme işlemi, Update için de eğer resim değişmişse silme işlemini kullandık. Gerekli açıklama satırlarını da eklediğim için dosya içerisini kontrol edebilirsiniz.
+
+
+[End]
+
+- Elimden geldiğince yaptığım her değişikliği, yaptığım tüm işlemleri yazmaya çalıştım ve açıklamaya çalıştım. Kafanızda bir soru işareti olursa sormaktan çekinmeyin.
+
 
 
 

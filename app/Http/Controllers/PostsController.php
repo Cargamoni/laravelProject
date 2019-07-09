@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Post;                               //App içerisindeki Post.php dosyasını model clasını da miras aldığı için burada çağırıyoruz. Bu sayede veri tabanı işlemlerini yapabileceğiz.
 use DB;                                     //SQL sorgularını kulanabilmemiz için DB kütüphanesini ekilyoruz.
+use Illuminate\Support\Facades\Storage;
 
 class PostsController extends Controller
 {
@@ -69,9 +70,38 @@ class PostsController extends Controller
         
         $this->validate($request, [
             'title' => 'required',
-            'body' => 'required'
+            'body' => 'required',
+            //Cover image için validate fonksiyonu biraz daha farklı çalışacak, required yerine
+            //image olduğunu belirtmek için image
+            //boş bırakılabilir olduğunu belirtmek için nullable
+            //boyut sınırlaması için de max:1999 ekliyoruz.
+            //Boyut sınırlaması çoğu apache serverda 2mb olduğu için bu şekilde yapıyoruz.
+            'cover_image' => 'image|nullable|max:1999'
         ]);
 
+        //Dosya Yükleme ile ilgilenecek olan bölüm burada başlıyor.
+        if($request->hasFile('cover_image'))
+        {
+            //Dosya adının uzantısı ile beraber alınması
+            $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+            
+            //Sadece Dosya Adının alınması
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+            //Sadece uzantının alınması
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            //Saklanacak Dosyanın Adı
+            $zaman = time();
+            $fileNameToStore = $filename.'_'.$zaman.'.'.$extension;
+
+            //Resmi yükleme
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+        } 
+        else 
+        {
+            $fileNameToStore = 'noImage.jpg';
+        }
 
 
         // Yeni bir post oluşturmak için artisan tinkerda yaptığımızın aynısını burada
@@ -86,6 +116,8 @@ class PostsController extends Controller
         $post->title = $request->input('title');
         $post->body = $request->input('body');
         $post->user_id = auth()->user()->id;
+        //yeni eklediğimiz sütun için dosya adını giriyoruz.
+        $post->cover_image = $fileNameToStore;
         $post->save();
         
         //İşlem tamamlandıktan sonra postların olduğu sayfaya redirect edilmekteyiz.
@@ -118,7 +150,7 @@ class PostsController extends Controller
         //Show içerisindeki gibi aslında postu id'sine göre getirip onun ile ilgili işlem yapacağız.
         //Dolayısıyla bir de edit page oluşturmamız gerekmektedir. Create içerisinde ne varsa kopyalayıp
         //bir takım değişiklikler yapacağız. Değişiklikler için edit.blade.php içerisine bakabilirsiniz.
-        $post =  Post::find($id);
+        $post =  Post::find($id);        
 
         //Doğru kullanıcının kontrol edildiği bölüm burası
         if(auth()->user()->id !== $post->user_id) {
@@ -141,12 +173,45 @@ class PostsController extends Controller
             'body' => 'required'
         ]);
 
+        //Resim güncellendiğinde eski resmin adını alabilmek için post değişkeninin tnaımlanmasını
+        //Buraya aldık.
+        $post = Post::find($id);
+
+        //Dosya Yükleme ile ilgilenecek olan bölüm burada başlıyor.
+        //Yüklemeden farklı olarak burada işler biraz daha farklı gelişiyor.
+        //Yüklenmezse eski fotoğrafı silmemek için else bölümünü kaldırıyoruz.
+        if($request->hasFile('cover_image'))
+        {
+            //Dosya adının uzantısı ile beraber alınması
+            $fileNameWithExt = $request->file('cover_image')->getClientOriginalName();
+            
+            //Sadece Dosya Adının alınması
+            $filename = pathinfo($fileNameWithExt, PATHINFO_FILENAME);
+
+            //Sadece uzantının alınması
+            $extension = $request->file('cover_image')->getClientOriginalExtension();
+
+            //Saklanacak Dosyanın Adı
+            $zaman = time();
+            $fileNameToStore = $filename.'_'.$zaman.'.'.$extension;
+
+            //Resmi yükleme
+            $path = $request->file('cover_image')->storeAs('public/cover_images', $fileNameToStore);
+
+            //Eski Resmi Silme
+            Storage::delete('public/cover_images/'.$post->cover_image);
+        }
+
         //Burada yaptığımız değişiklik, bir postumuz hali hazırda bulunduğu için 
         //yeni bir post şeklinde açmayacağız, bunun yerine Request ile beraber gelen 
         //id ile find fonksiyonumuzu çalıştıracağız.
-        $post = Post::find($id);
+        //$post = Post::find($id);
         $post->title = $request->input('title');
         $post->body = $request->input('body');
+        //Eğer gerçekten bir resim eklendiyse ekleme yapılacak, eskisi silinecek
+        if($request->hasFile('cover_image')){
+            $post->cover_image = $fileNameToStore;
+        }
         $post->save();
         
         return redirect('/posts')->with('success','Post Düzenlendi');
@@ -168,6 +233,11 @@ class PostsController extends Controller
         //Doğru kullanıcının kontrol edildiği bölüm burası
         if(auth()->user()->id !== $post->user_id) {
             return redirect('posts')->with('error', 'Unauthorized Page');
+        }
+
+        if($post->cover_image != 'noImage.jpg') {
+            //Resmi silme
+            Storage::delete('public/cover_images/'.$post->cover_image);
         }
 
         $post->delete();

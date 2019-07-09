@@ -6,6 +6,8 @@
     
     <h1>{{$post->title}}</h1>
     <div class="card card-body">
+            {{-- Böylelikle resim 2rem aşağıda gözükecektir. Dosya yerlerine dikkat ediniz.--}}
+            <img class="img-fluid mb-2" src="../storage/cover_images/{{$post->cover_image}}">
             {{-- <p>{{$post->body}}</p> --}}
 
             {{-- CK-Editör eklendikten sonra HTML taglarını okuyabilmesi içingösterim şeklini aşağıdaki gibi değiştiriyoruz. --}}
