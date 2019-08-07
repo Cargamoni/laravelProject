@@ -2,6 +2,11 @@
 
 * NOT: Bu dökümanı indiip, bir editör aracılığı ile bakarsanız daha rahat okuyabilirsiniz.
 
+Porje başlatmak için Composer Kullanmaktayız. Composer bizim için Laravel projesini kullanıma hazır bir şekilde kurulmasını sağlamaktadır.
+
+    - composer create-project laravel/laravel laravelProject
+
+
 [Part1]
 - public dizini frontend bölümü
     . /opt/lampp/etc/extra/httpd-vhosts.conf içerisine alttaki satırlar ekleniyor.
